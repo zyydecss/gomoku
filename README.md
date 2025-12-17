@@ -43,7 +43,9 @@
 
 ## 在线演示
 
-可以直接访问 GitHub Pages 查看在线演示（如果已配置）。
+🎮 **[立即开始游戏](https://zyydecss.github.io/gomoku/gomoku.html)**
+
+访问上面的链接即可在浏览器中直接体验五子棋游戏，无需下载安装。
 
 ## 贡献
 
