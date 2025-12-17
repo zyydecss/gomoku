@@ -455,6 +455,12 @@
                         return;
                     }
 
+                    // 检查是否平局（棋盘已满）
+                    if (this.moveHistory.length === BOARD_SIZE * BOARD_SIZE) {
+                        this.endGame(null); // null 表示平局
+                        return;
+                    }
+
                     // 切换玩家
                     this.switchPlayer();
                 }
@@ -489,10 +495,17 @@
              * 悔棋功能
              */
             undo() {
-                if (this.moveHistory.length === 0 || this.gameOver) return;
+                if (this.moveHistory.length === 0) return;
 
                 const lastMove = this.moveHistory.pop();
                 this.board.removePiece(lastMove.row, lastMove.col);
+
+                // 如果游戏已结束，悔棋后恢复游戏状态
+                if (this.gameOver) {
+                    this.gameOver = false;
+                    document.getElementById('overlay').classList.remove('show');
+                    document.getElementById('winnerMessage').classList.remove('show');
+                }
 
                 // 切换回上一个玩家
                 this.switchPlayer();
@@ -501,11 +514,17 @@
 
             /**
              * 结束游戏并显示获胜者
-             * @param {number} winner - 获胜方
+             * @param {number} winner - 获胜方（null 表示平局）
              */
             endGame(winner) {
                 this.gameOver = true;
-                const winnerText = winner === PieceType.BLACK ? '黑棋获胜！' : '白棋获胜！';
+                let winnerText;
+
+                if (winner === null) {
+                    winnerText = '平局！棋盘已满';
+                } else {
+                    winnerText = winner === PieceType.BLACK ? '黑棋获胜！' : '白棋获胜！';
+                }
 
                 document.getElementById('winnerText').textContent = winnerText;
                 document.getElementById('overlay').classList.add('show');
